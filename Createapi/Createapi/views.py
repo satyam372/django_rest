@@ -7,44 +7,46 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from django.contrib.auth.hashers import check_password
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+  # Make sure to import your serializer
+
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def showemp(request):
-    if request.method=='GET':
-        results=Login.objects.all()
-        serialize=SerializationClass(results,many=True)
+    if request.method == 'GET':
+        results = Login.objects.all()
+        serialize = SerializationClass(results, many=True)
         return Response(serialize.data)
-    
+
 @api_view(['POST'])
 def validate(request):
+    if request.method == 'POST':
+        try:
+            username = request.data.get('fname', '')
+            password = request.data.get('password', '')
 
-    try:
+            user = Login.objects.get(name=username)
 
-        user_aaa = User.objects.get(username='aaa')
-        print(f"User 'aaa' exists: {user_aaa}")
-    except User.DoesNotExist:
-       
-       print("User 'aaa' does not exist.")
+            # Assuming you are storing passwords as plain text (which is not recommended)
+            if user.passs == password:
+                message = 'User authenticated successfully'
+                return JsonResponse({'message': message}, status=200)
+            else:
+                message = 'Incorrect password'
+                return JsonResponse({'message': message}, status=401)
 
-# Query user by username 'ggg'
-    try:
-        user_ggg = User.objects.get(username='ggg')
-        print(f"User 'ggg' exists: {user_ggg}")
-    except User.DoesNotExist:
-      print("User 'ggg' does not exist.")
-    # if request.method == 'POST':
-    #     name = request.data.get('name')
-    #     passs = request.data.get('passs')
-
-    #     user = authenticate(request, name=name, passs=passs)
-
-    #     if user is not None:
-    #         token, created = Token.objects.get_or_create(user=user)
-    #         return Response({'success'})
-    #     else:
-    #         return Response({'error': 'invalid credentials'}, status=401)
-
+        except Login.DoesNotExist:
+            message = 'User does not exist'
+            return JsonResponse({'message': message}, status=404)
