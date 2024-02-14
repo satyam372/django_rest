@@ -22,11 +22,18 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from django.urls import path
+from .views import CustomTokenObtainPairView
+from .views import SecureEndpoint
+
 from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('show',views.showemp,name='showemp'),
-    path('validate',views.validate,name='validate')
+    path('validate',views.validate,name='validate'),
+    path('secure-endpoint/', SecureEndpoint.as_view(), name='secure_endpoint'),
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair')
+    # Add other authentication-related endpoints
 ]

@@ -81,7 +81,9 @@ REST_FRAMEWORK = {
     )
     
 }
-
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 
 # Database
@@ -90,7 +92,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'complaints',
+        'NAME': 'complaints_2',
         'USER':'root',
         'PASSWORD':'satyam@4545',
         'HOST':'localhost',
