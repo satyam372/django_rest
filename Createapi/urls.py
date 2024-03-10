@@ -39,7 +39,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from Createapi import views  # Import your views module
-from Createapi.views import SecureEndpoint, CustomTokenObtainPairView, Registercomplaint,Registercomplaint_2,EmployeeComplaintDetailsView
+from Createapi.views import SecureEndpoint, CustomTokenObtainPairView, Registercomplaint,Registercomplaint_2,CombinedComplaintsView
 # from .views import ComplaintDetailsView
 
 urlpatterns = [
@@ -52,6 +52,6 @@ urlpatterns = [
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('Register-complaint/', Registercomplaint.as_view(), name='Registercomplaint'), # registring 1st part of complaint
     path('Register-complaint_2/', Registercomplaint_2.as_view(),name='Registercomplaint_2'), # refistring 2nd part of complaint
-    path('employee-complaints/<int:emp_id>/', EmployeeComplaintDetailsView.as_view(), name='employee_complaint_details'),
+    path('employee-complaints/<int:emp_id>/', CombinedComplaintsView.as_view(), name='complaints_by_employee'),
  # api to retrive complaint
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # to save the image to a directory
