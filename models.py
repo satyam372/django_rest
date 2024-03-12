@@ -37,20 +37,6 @@ class Raisecomplaint_2(models.Model):
     
     # changed path to 'media/images' this is the actuall directory name 
     # which is made in django project file
-        
-class Raisecomplaint_3(models.Model):
-    complaint=models.ForeignKey(Raisecomplaint,on_delete=models.CASCADE,primary_key=True)
-    administrator_status=models.CharField(max_length=100)
-    administrator_assign_time=models.DateTimeField()
-    engineer_status=models.CharField(max_length=100)
-    engineer_completion_time=models.DateTimeField
-    user_closing_status=models.CharField(max_length=100)
-    user_closing_time=models.DateTimeField
-    photo_of_complition=models.ImageField(upload_to='media/images',default=None)
-
-    class Meta:
-        db_table='Raisecomplaint_3'
-
 
    
 
