@@ -34,8 +34,11 @@ from django.shortcuts import get_object_or_404
 # class Raiseissue_3serializer and class Raise_3assign from serialization.py file 
 
 
+
+
+
 class UpdateAdministratorStatus(APIView):
-    def post(self, request):
+    def post(self, request,*args,**kwargs):
         # 'request' is the instance of django httpRequest class
         # this class has info about http request, like user information
 
@@ -48,16 +51,17 @@ class UpdateAdministratorStatus(APIView):
 
         # Retrieve the Raisecomplaint instance
          # from Raisecomplaint model
-         # retrive spe
+         # retrive specific comoplaitn/Row from Raisecomplaint model
         complaint_id = request.data.get('complaint')
-        # this
+        
         raisecomplaint_instance = get_object_or_404(Raisecomplaint, complaint_id=complaint_id)
 
-        # Create a new Raisecomplaint_3 instance
+        # getting object/info for specific cmp_id from raisecomplaint model
         register_serializer = Raiseissue_3serializer(data=request.data)
         if register_serializer.is_valid():
             register_instance = register_serializer.save(complaint=raisecomplaint_instance)
             register_instance.administrator_status = "assigned"
+            
             register_instance.administrator_assign_time = timezone.now()
             register_instance.save()
 
@@ -65,19 +69,23 @@ class UpdateAdministratorStatus(APIView):
         else:
             return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#  below is the class to retrive the complaints
+#  below is the class to retrive the complaints for employee
 class CombinedComplaintsView(APIView):
     def get(self, request, emp_id, *args, **kwargs):
         # Get complaints from Raisecomplaint model
         raisecomplaints = Raisecomplaint.objects.filter(emp_id=emp_id)
         raisecomplaints_serializer = CombinedComplaintsSerializer(raisecomplaints, many=True).data
 
+
         # Get complaints from Raisecomplaint_2 model
         raisecomplaint_2s = Raisecomplaint_2.objects.filter(emp_id=emp_id)
         raisecomplaint_2s_serializer = CombinedComplaintsSerializer(raisecomplaint_2s, many=True).data
+        
+        raisecomplaint_3s = Raisecomplaint_3.objects.filter(complaint__emp_id=emp_id)
+        raisecomplaint_3s_serializer = CombinedComplaintsSerializer(raisecomplaint_3s, many=True).data
 
-        # Combine the data from both models
-        combined_data = raisecomplaints_serializer + raisecomplaint_2s_serializer
+        # Combine the data from all models
+        combined_data = raisecomplaints_serializer + raisecomplaint_2s_serializer + raisecomplaint_3s_serializer
 
         return Response(combined_data)
     

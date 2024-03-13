@@ -38,6 +38,13 @@ class CombinedComplaintsSerializer(serializers.Serializer):
     priority = serializers.CharField(required=False)
     photo_of_issue = serializers.ImageField(required=False)
     floor = serializers.CharField(required=False)
+    administrator_status = serializers.CharField(required=False)
+    administrator_assign_time = serializers.DateTimeField(required=False)
+    engineer_status = serializers.CharField(required=False)
+    engineer_completion_time = serializers.DateTimeField(required=False)
+    user_closing_status = serializers.CharField(required=False)
+    user_closing_time = serializers.DateTimeField(required=False)
+    photo_of_complition = serializers.ImageField(required=False)
 
 
 class Raiseissue_3serializer(serializers.ModelSerializer):

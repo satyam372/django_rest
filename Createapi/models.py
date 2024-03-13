@@ -43,9 +43,9 @@ class Raisecomplaint_3(models.Model):
     administrator_status=models.CharField(max_length=100)
     administrator_assign_time=models.DateTimeField()
     engineer_status=models.CharField(max_length=100)
-    engineer_completion_time=models.DateTimeField
+    engineer_completion_time=models.DateTimeField()
     user_closing_status=models.CharField(max_length=100)
-    user_closing_time=models.DateTimeField
+    user_closing_time=models.DateTimeField()
     photo_of_complition=models.ImageField(upload_to='media/images',default=None)
 
     class Meta:
