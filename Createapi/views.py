@@ -88,7 +88,7 @@ class CombinedComplaintsView(APIView):
         combined_data = raisecomplaints_serializer + raisecomplaint_2s_serializer + raisecomplaint_3s_serializer
 
         return Response(combined_data)
-    
+     
 
 
 
